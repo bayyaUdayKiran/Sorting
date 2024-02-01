@@ -1,7 +1,7 @@
 # include <iostream>
 # include <cstdlib>
 # include <ctime>
-# include "utility.h"
+# include "headers/utility.h"
 
 using namespace std;
 
@@ -25,11 +25,7 @@ void printArray(int arr[], int n){
     cout << ']' << endl;
 }
 
-void swap(int arr[], int n, int i, int j){
-    int temp = arr[i];
-    arr[i] = arr[j];
-    arr[j] = temp;
-}
+
 
 int max(int arr[], int n){
     int mx = arr[0];
@@ -203,7 +199,7 @@ int hPartition(int arr[], int li, int hi){
             return j;
 
         swap(arr[i], arr[j]);
-        //printArray(arr, 8);
+
     }
     return -1;
 }

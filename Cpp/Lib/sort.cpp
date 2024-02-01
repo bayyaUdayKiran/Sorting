@@ -1,4 +1,4 @@
-# include "utility.h"
+# include "headers/utility.h"
 
 void mergeSort(int arr[], int li, int ri, int n){
     if(li<ri){
@@ -24,4 +24,6 @@ void hQSort(int arr[], int li, int hi){
         lQSort(arr, p+1, hi);
     }
 }
+
+
 
