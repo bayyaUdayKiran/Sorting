@@ -6,7 +6,7 @@
 using namespace std;
 
 
-void populateArray(int arr[], int n){
+void populate_array(int arr[], int n){
     cout << n;
     for(int i = 0; i<n; i++){
         cout << "array[" << i << "]: ";
@@ -14,7 +14,7 @@ void populateArray(int arr[], int n){
     }
 }
 
-void printArray(int arr[], int n){
+void print_array(int arr[], int n){
     cout << '[';
     for(int i = 0; i<n; i++){
         if(i!=n-1)
@@ -27,7 +27,7 @@ void printArray(int arr[], int n){
 
 
 
-int max(int arr[], int n){
+int max_element(int arr[], int n){
     int mx = arr[0];
     for(int i = 1; i<n; i++){
         if(arr[i]>mx)
@@ -37,7 +37,7 @@ int max(int arr[], int n){
     return mx;
 }
 
-int min(int arr[], int n){
+int min_element(int arr[], int n){
     int mn = arr[0];
     for(int i = 1; i<n; i++){
         if(arr[i]<mn)
@@ -47,7 +47,7 @@ int min(int arr[], int n){
     return mn;
 }
 
-int cpArray(int src[], int dest[], int sn, int dn){
+int cp_array(int src[], int dest[], int sn, int dn){
     if(sn!=dn)
         return -1;
     for(int i = 0; i<sn; i++){
@@ -57,7 +57,7 @@ int cpArray(int src[], int dest[], int sn, int dn){
     return 0;
 }
 
-int** splitArray(int arr[], int mid, int n){
+int** split_array(int arr[], int mid, int n){
     int col1 = mid, col2 = n - mid, col;
 
     int** res = new int*[2];
@@ -73,7 +73,7 @@ int** splitArray(int arr[], int mid, int n){
     return res;
 }
 
-bool isSorted(int arr[], bool rev, int n){
+bool is_sorted(int arr[], bool rev, int n){
 
     for(int i = 1; i<n; i++){
         if(arr[i-1]>arr[i] && !rev)
@@ -134,8 +134,8 @@ void merge(int arr[], int  li, int ri, int mid, int n){
     
 }
 
-int maxDigit(int arr[], int n){
-    int largest = max(arr, n), mxdgt = 0, digit;
+int max_digit(int arr[], int n){
+    int largest = max_element(arr, n), mxdgt = 0, digit;
 
     for(int exp = 1; largest/exp > 0; exp*=10){
         for(int j = 0; j<n; j++){
@@ -202,4 +202,42 @@ int hPartition(int arr[], int li, int hi){
 
     }
     return -1;
+}
+
+void max_heapify(int arr[], int n, int i) {
+    int max = i;
+    int li = (2*i) + 1, ri = (2*i) + 2;
+
+    if(li < n && arr[li] > arr[max])
+        max = li;
+
+    if(ri < n && arr[ri] > arr[max])
+        max = ri;
+
+    if(max != i){
+        swap(arr[i], arr[max]);
+        max_heapify(arr, n, max);
+    }   
+}
+
+void min_heapify(int arr[], int n, int i){
+    int min = i;
+    int li = (2*i) + 1, ri = (2*i) + 2;
+
+    if(li < n && li < min)
+        min = li;
+
+    if(ri < n && ri < min)
+        min = ri;
+
+    if(min != i){
+        swap(arr[i], arr[min]);
+        min_heapify(arr, n, min);
+    }   
+}
+
+void build_heap(int arr[], int n){
+    for(int i = (n/2) - 1; i>=0; i--){
+        max_heapify(arr, n, i);
+    }
 }

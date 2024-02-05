@@ -92,40 +92,17 @@ public class Sort {
         }
     }
 
-
-     /**
-     * <pre>
-     * {@code public static void heapSort(int arr[])}
-     * </pre>
-     * Sorts an array of integers in ascending order using the Heap Sorting technique. Heap Sort is a comparison-based, in-place, un-stable sorting algorithm that uses a binary heap data structure to achieve sorting. It was first proposed by J. W. J. Williams in 1964.
-     * <p>The Heap Sort algorithm involves building a max heap from the given array(heapify),
-     * then repeatedly swapping the root (largest) element with the last element in the
-     * array and also ensures that the heap property is ensured(heapify). This process is performed iteratively,
-     * effectively moving the largest elements to the end of the array in a sorted manner.</p>
-     * <p>
-     <p>The algorithm consists of the following steps:
-     * <ol>
-     *   <li>Build a max heap from the array using the {@link Utility#heapify(int[], int, int)} method.</li>
-     *   <li>Iterate backward through the array (from the end to the beginning):
-     *     <ul>
-     *       <li>Swap the root (largest) element with the last element in the unsorted portion.</li>
-     *       <li>Reduce the heap size by one and restore the heap property using {@link Utility#heapify(int[], int, int)}.</li>
-     *     </ul>
-     *   </li>
-     * </ol></p>
-     * @param arr input array
-     * @throws NullPointerException if the input array is null.
-     */
     public static void heapSort(int arr[]){
-        //builds a max heap using heapify..
-        Utility.heapify(arr, 0, arr.length-1);
+        int n = arr.length;
+        //Build a max heap..
+        Utility.build_heap(arr);
 
-        //iterates backward, that is, from the smallest leaf node to the larger nodes..
-        for(int i = arr.length-1; i>=1; i--){
-            Utility.swap(arr, 0, i);//swaps the largest root node element towards the bottom, to maintain the sorted structure of the heap..
-            int j = i-1;//marks the index, which acts as a boundary between swapped larger elements at the end(which are structured in a sorted nature) and smaller elements on left side on which heapify will be implemented..
-            Utility.heapify(arr, 0, j);//calling heapify again on the reduced heap (excluding the swapped elements). Which correctly ensures that the largest element is placed at the end in each iteration..
-        }
+        for(int i = n-1; i>=1; i--){
+            Utility.swap(arr, 0, i);
+
+            //Heapify the reduced heap..
+            Utility.max_heapify(arr, i, 0);
+        }  
     }
 
      /**

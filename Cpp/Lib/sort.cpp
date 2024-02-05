@@ -1,4 +1,8 @@
 # include "headers/utility.h"
+# include <cstdlib>
+# include <iostream>
+
+using namespace std;
 
 void mergeSort(int arr[], int li, int ri, int n){
     if(li<ri){
@@ -25,5 +29,16 @@ void hQSort(int arr[], int li, int hi){
     }
 }
 
+void heapSort(int arr[], int n){
+    //Build a max heap..
+    build_heap(arr, n);
+
+    for(int i = n-1; i>=1; i--){
+        swap(arr[0], arr[i]);
+
+        //Heapify the reduced heap..
+        max_heapify(arr, i, 0);
+    }  
+}
 
 

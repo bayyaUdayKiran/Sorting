@@ -523,37 +523,26 @@ public class Utility {
         swap(arr, rp, pi);//swaps the pivot element with the randomly selected array's element
     }
 
-    /**
-     * <pre>
-     * {@code public static void heapify(int arr[], int l, int h)}
-     * </pre>
-     * Builds a max heap from a given input array.
-     * This method iterates through a specified range of elements in an array 
-     * and compares each element(root node) with its children nodes. If any child is greater than
-     * its parent, they are swapped to restore the max-heap property. This process
-     * ensures that the largest element remains at the root of the heapified sub-tree.
-     * <p>
-     * Besides it's standalone usage, it's mostly used in the implementation of heap sort algorithm
-     * @param arr input array
-     * @param l The starting index of the sub-tree to heapify (inclusive).
-     * @param h The ending index of the sub-tree to heapify (inclusive).
-     * @throws IndexOutOfBoundsException If `l` or `h` is out of bounds for the array.
-     */
-    public static void heapify(int arr[], int l, int h){
-        for(int i = l; i<=h; i++){
-            int li = (2*i)+1, ri = (2*i)+2;//Child nodes' index positions..
+    public static void max_heapify(int arr[], int n, int i){
+        int max = i;
+        int li = (2*i) + 1, ri = (2*i) + 2;
 
-            if((li>h)||(ri>h))
-                break;// reached a leaf node, no children to compare
+        if(li < n && arr[li] > arr[max])
+            max = li;
 
-            int lChild = arr[li], rChild = arr[ri];
-            
-            if((lChild>arr[i])||(rChild>arr[i])){
-                if(lChild>rChild)
-                    swap(arr, li, i);//Swap root node with the larger leftchild node(since, left child is both larger than root node and it's right child)
-                else
-                    swap(arr, ri, i);//Swap root node with the larger rightchild node(since, right child is both larger than root node and it's left child)
-            } 
+        if(ri < n && arr[ri] > arr[max])
+            max = ri;
+
+        if(max != i){
+            Utility.swap(arr, i, max);
+            max_heapify(arr, n, max);
+        } 
+    }
+
+    public static void build_heap(int arr[]){
+        int n = arr.length;
+        for(int i = (n/2) - 1; i>=0; i--){
+            max_heapify(arr, arr.length, i);
         }
     }
 
