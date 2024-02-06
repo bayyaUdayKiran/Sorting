@@ -101,7 +101,7 @@ public class Sort {
             Utility.swap(arr, 0, i);
 
             //Heapify the reduced heap..
-            Utility.max_heapify(arr, i, 0);
+            Utility.min_heapify(arr, i, 0);
         }  
     }
 

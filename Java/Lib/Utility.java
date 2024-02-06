@@ -539,10 +539,26 @@ public class Utility {
         } 
     }
 
+    public static void min_heapify(int arr[], int n, int i){
+        int min = i;
+        int li = (2*i) + 1, ri = (2*i) + 2;
+
+        if(li < n && arr[li] < arr[min])
+            min = li;
+
+        if(ri < n && arr[ri] < arr[min])
+            min = ri;
+
+        if(min != i){
+            Utility.swap(arr, i, min);
+            min_heapify(arr, n, min);
+        } 
+    }
+
     public static void build_heap(int arr[]){
         int n = arr.length;
         for(int i = (n/2) - 1; i>=0; i--){
-            max_heapify(arr, arr.length, i);
+            min_heapify(arr, arr.length, i);
         }
     }
 
