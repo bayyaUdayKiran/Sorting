@@ -2,6 +2,7 @@
 # include <cstdlib>
 # include <ctime>
 # include "headers/utility.h"
+# include "headers/sort.h"
 
 using namespace std;
 
@@ -27,34 +28,40 @@ void print_array(int arr[], int n){
 
 
 
-int max_element(int arr[], int n){
-    int mx = arr[0];
+int maxf(int arr[], int n, bool indx){
+    int mx = arr[0], mx_indx;
     for(int i = 1; i<n; i++){
-        if(arr[i]>mx)
+        if(arr[i] > mx){
             mx = arr[i];
+            mx_indx = i;
+        }       
     }
 
-    return mx;
+    if(indx)
+        return mx_indx;
+    else
+        return mx;
 }
 
-int min_element(int arr[], int n){
-    int mn = arr[0];
+int minf(int arr[], int n, bool indx){
+    int mn = arr[0], mn_indx = 0;
     for(int i = 1; i<n; i++){
-        if(arr[i]<mn)
+        if(arr[i]<mn){
             mn = arr[i];
+            mn_indx = i;
+        }
     }
 
-    return mn;
+    if(indx)
+        return mn_indx;
+    else
+        return mn;
 }
 
-int cp_array(int src[], int dest[], int sn, int dn){
-    if(sn!=dn)
-        return -1;
-    for(int i = 0; i<sn; i++){
+void cp_array(int src[], int dest[], int n){
+    for(int i = 0; i<n; i++){
         *(dest+i) = *(src+i);
     }
-
-    return 0;
 }
 
 int** split_array(int arr[], int mid, int n){
@@ -135,7 +142,7 @@ void merge(int arr[], int  li, int ri, int mid, int n){
 }
 
 int max_digit(int arr[], int n){
-    int largest = max_element(arr, n), mxdgt = 0, digit;
+    int largest = maxf(arr, n, false), mxdgt = 0, digit;
 
     for(int exp = 1; largest/exp > 0; exp*=10){
         for(int j = 0; j<n; j++){
@@ -148,7 +155,7 @@ int max_digit(int arr[], int n){
     return mxdgt;
 }
 
-void partition(int arr[], int li, int hi, int pi){
+void naive_partition(int arr[], int li, int hi, int pi){
     int temp[hi-li+1];
     int k = 0, pivot = arr[pi];
 
@@ -204,6 +211,7 @@ int hPartition(int arr[], int li, int hi){
     return -1;
 }
 
+
 void max_heapify(int arr[], int n, int i) {
     int max = i;
     int li = (2*i) + 1, ri = (2*i) + 2;
@@ -224,10 +232,10 @@ void min_heapify(int arr[], int n, int i){
     int min = i;
     int li = (2*i) + 1, ri = (2*i) + 2;
 
-    if(li < n && li < min)
+    if(li < n && arr[li] < arr[min])
         min = li;
 
-    if(ri < n && ri < min)
+    if(ri < n && arr[ri] < arr[min])
         min = ri;
 
     if(min != i){
@@ -238,6 +246,76 @@ void min_heapify(int arr[], int n, int i){
 
 void build_heap(int arr[], int n){
     for(int i = (n/2) - 1; i>=0; i--){
-        max_heapify(arr, n, i);
+        min_heapify(arr, n, i);
     }
+}
+
+int naive_duplicate_count(int arr[], int n){
+    int count = 0;
+    int cp_arr[n];
+    cp_array(arr, cp_arr, n);
+
+    for(int i = 0; i<n; i++){
+        //skip the iteration if the pivotal element is already marked as a duplicate..
+        if(cp_arr[i] == -1)
+            continue;
+        for(int j = 0; j<n; j++){
+            //compares the pivotal element with all the other elements to check for it's doppleganger..
+            if(cp_arr[i] == cp_arr[j] && i != j){
+                count++;//count's number of dopplegangers(duplicates)..
+                cp_arr[j] = -1;//marks the doppleganger..
+            }
+        }
+    }
+
+    return count;
+    
+}
+
+int duplicate_count(int arr[], int n){
+    lQSort(arr, 0, n-1);
+    int count = 0;
+    for(int i = 1; i<n; i++){
+        if(arr[i] == arr[i-1])
+            count++;
+    }
+
+    return count;
+}
+
+int min_diff(int arr[], int n){
+    int diff = INT16_MAX;
+    lQSort(arr, 0, n-1);
+
+    if(n == 1)
+        return diff;
+
+    for(int i = n-1; i>0; i-=2){
+        diff = min((arr[i] - arr[i-1]), diff);
+    }
+
+    return diff;
+}
+
+void radix_count_sort(int arr[], int exp, int n){
+    int k = maxf(arr, n, false) + 1;
+    int sorted[n], count[k];
+    for(int i = 0; i<k; i++){
+        count[i] = 0;
+    }
+
+    for(int i = 0; i<n; i++){
+        count[(arr[i]/exp)%10]++;
+    }
+
+    for(int i = 1; i<k; i++){
+        count[i] = count[i-1] + count[i];
+    }
+
+    for(int i = n-1; i>=0; i--){
+        sorted[count[(arr[i]/exp)%10] - 1] = arr[i];
+        count[(arr[i]/exp)%10]--;
+    }
+
+    cp_array(sorted, arr, n);
 }
